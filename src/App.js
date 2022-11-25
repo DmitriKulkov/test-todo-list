@@ -1,10 +1,14 @@
+import { BrowserRouter } from 'react-router-dom';
 import './App.css';
-import TaskList from './pages/task-list-page/TaskListPage'
+import AppRoutes from './pages/AppRoutes';
 
 function App() {
+
   return (
     <div className="App">
-      <TaskList></TaskList>
+      <BrowserRouter>
+        <AppRoutes/>
+      </BrowserRouter>
     </div>
   );
 }

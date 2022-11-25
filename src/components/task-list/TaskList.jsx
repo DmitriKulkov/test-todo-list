@@ -1,24 +1,24 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import classes from "./TaskList.module.css";
 
-const TaskList = () => {
+const TaskList = ({ tasks }) => {
   return (
     <div className={classes.task_list__container}>
-      <div className={classes.task}>
-        <h2>Task1</h2>
-        <h2>9 Nov</h2>
-        <div>In progress</div>
-      </div>
-      <div className={classes.task}>
-        <h2>Task1</h2>
-        <h2>9 Nov</h2>
-        <div>In progress</div>
-      </div>
-      <div className={classes.task}>
-        <h2>Task1</h2>
-        <h2>9 Nov</h2>
-        <div>In progress</div>
-      </div>
+      <header className={classes.task_list__header}>
+        <h3>Title</h3>
+        <h3>EndsAt</h3>
+        <h3>Status</h3>
+      </header>
+      {tasks.map((task) => (
+        <div key={task.id} className={classes.task}>
+          <Link to={"/task/" + task.id}>
+            <h2>{task.title}</h2>
+          </Link>
+          {/* <h2>{task.endsAt}</h2> */}
+          <div>{task.status}</div>
+        </div>
+      ))}
     </div>
   );
 };
