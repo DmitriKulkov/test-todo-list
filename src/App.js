@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import TaskList from './pages/task-list-page/TaskListPage'
 
@@ -11,3 +10,4 @@ function App() {
 }
 
 export default App;
+
