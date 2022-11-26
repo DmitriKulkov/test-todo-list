@@ -85,6 +85,7 @@ const TaskPage = () => {
                     handleEdit(task);
                   }}
                   task={task}
+                  files={files}
                 />
               </EditDialog>
               <div>

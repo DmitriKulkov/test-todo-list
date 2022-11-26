@@ -1,0 +1,30 @@
+.form_button {
+  border: none;
+  height: 30px;
+  padding: 0 10px;
+}
+
+.files__element {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  .filename {
+    text-decoration: underline;
+  }
+
+  .todelete {
+    text-decoration: line-through;
+  }
+
+  .delete {
+    background-color: lightpink;
+    .form_button();
+  }
+
+  .restore {
+    background-color: lightgreen;
+    .form_button();
+  }
+}

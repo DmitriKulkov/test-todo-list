@@ -1,8 +1,9 @@
 import dayjs from "dayjs";
 import React from "react";
+import FilesList from "../FilesList";
 import classes from "./index.module.less";
 
-const TaskForm = ({ onSubmit, task = {} }) => {
+const TaskForm = ({ onSubmit, task = {}, files = [] }) => {
   return (
     <form
       className={classes.edit_form}
@@ -34,6 +35,8 @@ const TaskForm = ({ onSubmit, task = {} }) => {
         rows="10"
         defaultValue={task.description}
       />
+      <h3>Files</h3>
+      <FilesList files={files} />
       <div className={classes.submit__container}>
         <button type="submit" className={classes.submit__button}>
           Submit
