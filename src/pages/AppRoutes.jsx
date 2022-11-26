@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import TaskListPage from "./task-list-page/TaskListPage";
-import TaskPage from "./task-page/TaskPage";
+import TaskListPage from "./TaskListPage";
+import TaskPage from "./TaskPage";
 
 const AppRoutes = () => {
   return (
