@@ -10,12 +10,11 @@ import useFetching from "../../hooks/useFetching";
 import { Context } from "../..";
 import { Link, useParams } from "react-router-dom";
 import dayjs from "dayjs";
-import { Edit, ArrowBackIos, UploadFile } from "@mui/icons-material";
+import { Edit, ArrowBackIos } from "@mui/icons-material";
 import classes from "./index.module.less";
 import EditDialog from "../../components/UI/EditDialog";
 import TaskForm from "../../components/TaskForm";
-import { listAll, ref, uploadBytes } from "firebase/storage";
-import { async } from "@firebase/util";
+import { deleteObject, listAll, ref, uploadBytes } from "firebase/storage";
 
 const TaskPage = () => {
   const [task, setTask] = useState();
@@ -30,7 +29,7 @@ const TaskPage = () => {
     return Promise.all([
       getDoc(doc(firestore, "tasks", id)).then((res) => {
         if (res.exists()) {
-          setTask(res.data());
+          setTask({ ...res.data(), id: id });
         }
       }),
       getFilesList(),
@@ -45,17 +44,52 @@ const TaskPage = () => {
     await setDoc(doc(firestore, "tasks", id), editedTask);
   };
 
-  const handleDelete = async () => {
-    await deleteDoc(doc(firestore, "tasks", id));
+  const handleUploadFile = (filename, file) => {
+    return uploadBytes(ref(storage, task.id + "/" + filename), file);
   };
 
-  const handleUploadFile = (file) => {
-    return uploadBytes(ref(storage, id + "/" + file.name), file);
+  const deleteFile = (filename) => {
+    return deleteObject(ref(storage, id + "/" + filename));
+  };
+
+  const handleFiles = (newFiles) => {
+    const promises = [];
+    Object.entries(files).forEach(([filename, todelete]) => {
+      if (todelete) {
+        promises.push(deleteFile(filename));
+      }
+    });
+    Object.entries(newFiles).forEach(([filename, file]) => {
+      promises.push(handleUploadFile(filename, file));
+    });
+    return Promise.all(promises);
+  };
+
+  const handleDelete = () => {
+    return Promise.all(
+      [deleteDoc(doc(firestore, "tasks", id))],
+      Object.entries(files).forEach((file) => deleteFile(file[0]))
+    );
   };
 
   const getFilesList = async () => {
     const files = await listAll(ref(storage, id));
-    setFiles(files.items.map((doc) => doc._location.path_.split("/").at(-1)));
+    const filenames = files.items.map((doc) =>
+      doc._location.path_.split("/").at(-1)
+    );
+    const dict = {};
+    filenames.forEach((file) => {
+      dict[file] = false;
+    });
+    setFiles(dict);
+  };
+
+  const viewFiles = (files) => {
+    const res = [];
+    for (const file of Object.entries(files)) {
+      res.push(<p key={file[0]}>{file[0]}</p>);
+    }
+    return res;
   };
 
   return (
@@ -79,13 +113,17 @@ const TaskPage = () => {
               </button>
               <EditDialog open={editOpen} setOpen={setEditOpen}>
                 <TaskForm
-                  onSubmit={(task) => {
-                    setTask(task);
+                  onSubmit={async (task, newFiles) => {
+                    await Promise.all([
+                      handleEdit(task),
+                      handleFiles(newFiles),
+                    ]);
+                    fetching();
                     setEditOpen(false);
-                    handleEdit(task);
                   }}
                   task={task}
                   files={files}
+                  setFiles={setFiles}
                 />
               </EditDialog>
               <div>
@@ -103,9 +141,7 @@ const TaskPage = () => {
               {files && (
                 <div>
                   <h3>Files</h3>
-                  {files.map((file) => {
-                    return <p key={file}>{file}</p>;
-                  })}
+                  {viewFiles(files)}
                 </div>
               )}
 
@@ -134,22 +170,6 @@ const TaskPage = () => {
               >
                 Mark as In progress
               </button>
-
-              {/* <input type="file" id="file_input" />
-              <button
-                onClick={() => {
-                  const fi = document.querySelector("#file_input");
-                  console.log(fi.files);
-                  for (const file of fi.files) {
-                    handleUploadFile(file)
-                      .then(() => console.log("ok"))
-                      .catch((e) => console.log(e));
-                  }
-                  // getFilesList();
-                }}
-              >
-                Upload
-              </button> */}
             </div>
           ) : (
             <div>Error</div>

@@ -1,14 +1,18 @@
 import dayjs from "dayjs";
-import React from "react";
-import FilesList from "../FilesList";
+import React, { useContext, useState } from "react";
+import FilesList from "../FileList";
 import classes from "./index.module.less";
 
-const TaskForm = ({ onSubmit, task = {}, files = [] }) => {
+const TaskForm = ({ onSubmit, task = {}, files, setFiles }) => {
+  const [newFiles, setNewFiles] = useState({});
+  const [loading, setLoading] = useState(false);
+
   return (
     <form
       className={classes.edit_form}
       onSubmit={(e) => {
         e.preventDefault();
+        setLoading(true);
         const values = [e.target[0], e.target[1], e.target[2]].map(
           (inp) => inp.value
         );
@@ -17,7 +21,7 @@ const TaskForm = ({ onSubmit, task = {}, files = [] }) => {
           endsAt: values[1],
           description: values[2],
         };
-        onSubmit(editedTask);
+        onSubmit(editedTask, newFiles).then(() => setLoading(false));
       }}
     >
       <h3>Title</h3>
@@ -35,12 +39,63 @@ const TaskForm = ({ onSubmit, task = {}, files = [] }) => {
         rows="10"
         defaultValue={task.description}
       />
-      <h3>Files</h3>
-      <FilesList files={files} />
+
+      {files ? (
+        <div>
+          <h3>Uploaded Files</h3>
+          <FilesList
+            files={files}
+            onDelete={(filename) =>
+              setFiles((prev) => {
+                return { ...prev, [filename]: !prev[filename] };
+              })
+            }
+          />
+        </div>
+      ) : null}
+      <h3>New Files</h3>
+      <FilesList
+        files={newFiles}
+        onDelete={(filename) =>
+          setNewFiles((prev) => {
+            const nw = { ...prev };
+            delete nw[filename];
+            return nw;
+          })
+        }
+      />
+
+      <input type="file" id="file_input" multiple />
+      <button
+        type="button"
+        onClick={() => {
+          const fi = document.querySelector("#file_input");
+          const newFiles = {};
+          for (const file of fi.files) {
+            newFiles[file.name] = file;
+          }
+          setNewFiles((prev) => {
+            return { ...prev, ...newFiles };
+          });
+        }}
+      >
+        Add files
+      </button>
       <div className={classes.submit__container}>
         <button type="submit" className={classes.submit__button}>
           Submit
         </button>
+      </div>
+      <div
+        className={
+          loading
+            ? classes.files_loader + " " + classes.loading
+            : classes.files_loader
+        }
+      >
+        <div className={classes.files_loader__container}>
+          <h3>Loading files...</h3>
+        </div>
       </div>
     </form>
   );
