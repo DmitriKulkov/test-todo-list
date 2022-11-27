@@ -6,9 +6,9 @@ import useFetching from "../../hooks/useFetching";
 import { collection, getDocs, addDoc, doc } from "firebase/firestore/lite";
 import EditDialog from "../../components/UI/EditDialog";
 import TaskForm from "../../components/TaskForm";
-import { async } from "@firebase/util";
 import { ref, uploadBytes } from "firebase/storage";
 import FormButton from "../../components/UI/FormButton";
+import Loader from "../../components/UI/Loader";
 
 const TaskListPage = () => {
   const [tasks, setTasks] = useState([]);
@@ -62,7 +62,9 @@ const TaskListPage = () => {
           <TaskList tasks={tasks} />
         </div>
       ) : (
-        <div>Loading...</div>
+        <div className={classes.loader}>
+          <Loader />
+        </div>
       )}
     </div>
   );

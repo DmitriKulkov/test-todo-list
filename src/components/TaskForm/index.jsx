@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import React, { useState } from "react";
 import FilesList from "../FileList";
 import FormButton from "../UI/FormButton";
+import Loader from "../UI/Loader";
 import classes from "./index.module.less";
 
 const TaskForm = ({ onSubmit, task = {}, files, setFiles }) => {
@@ -37,9 +38,9 @@ const TaskForm = ({ onSubmit, task = {}, files, setFiles }) => {
       <h3>Description</h3>
       <textarea
         name="discription"
-        cols="120"
         rows="10"
         defaultValue={task.description}
+        className={classes.textarea}
       />
 
       {files ? (
@@ -102,6 +103,7 @@ const TaskForm = ({ onSubmit, task = {}, files, setFiles }) => {
         }
       >
         <div className={classes.files_loader__container}>
+          <Loader size="small" />
           <h3>Loading files...</h3>
         </div>
       </div>

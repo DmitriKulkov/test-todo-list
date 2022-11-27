@@ -23,6 +23,7 @@ import {
 import FormButton from "../../components/UI/FormButton";
 import Status from "../../components/Status";
 import ConfirmBox from "../../components/UI/ConfirmBox";
+import Loader from "../../components/UI/Loader";
 
 const TaskPage = () => {
   const [task, setTask] = useState();
@@ -128,7 +129,9 @@ const TaskPage = () => {
   return (
     <div>
       {loading ? (
-        <div>Loading...</div>
+        <div className={classes.loader}>
+          <Loader />
+        </div>
       ) : (
         <div>
           {task ? (
