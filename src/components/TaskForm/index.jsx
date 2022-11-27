@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import FilesList from "../FileList";
+import FormButton from "../UI/FormButton";
 import classes from "./index.module.less";
 
 const TaskForm = ({ onSubmit, task = {}, files, setFiles }) => {
@@ -20,6 +21,7 @@ const TaskForm = ({ onSubmit, task = {}, files, setFiles }) => {
           title: values[0],
           endsAt: values[1],
           description: values[2],
+          status: task.status ? task.status : "In progress",
         };
         onSubmit(editedTask, newFiles).then(() => setLoading(false));
       }}
@@ -65,26 +67,31 @@ const TaskForm = ({ onSubmit, task = {}, files, setFiles }) => {
         }
       />
 
-      <input type="file" id="file_input" multiple />
-      <button
-        type="button"
-        onClick={() => {
-          const fi = document.querySelector("#file_input");
+      <input
+        type="file"
+        id="file_input"
+        className={classes.file_input}
+        onChange={(e) => {
           const newFiles = {};
-          for (const file of fi.files) {
+          for (const file of e.target.files) {
             newFiles[file.name] = file;
           }
           setNewFiles((prev) => {
             return { ...prev, ...newFiles };
           });
         }}
+        multiple
+      />
+      <FormButton
+        type="button"
+        onClick={() => document.querySelector("#file_input").click()}
       >
         Add files
-      </button>
+      </FormButton>
       <div className={classes.submit__container}>
-        <button type="submit" className={classes.submit__button}>
+        <FormButton type="submit" className={classes.submit__button}>
           Submit
-        </button>
+        </FormButton>
       </div>
       <div
         className={

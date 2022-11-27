@@ -1,11 +1,11 @@
 import { BrowserRouter } from 'react-router-dom';
-import './App.css';
+import classes from './App.less';
 import AppRoutes from './pages/AppRoutes';
 
 function App() {
 
   return (
-    <div className="App">
+    <div className={classes.App}>
       <BrowserRouter>
         <AppRoutes/>
       </BrowserRouter>

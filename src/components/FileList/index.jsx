@@ -1,4 +1,5 @@
 import React from "react";
+import FormButton from "../UI/FormButton";
 import classes from "./index.module.less";
 
 const FilesList = ({ files, onDelete }) => {
@@ -17,15 +18,13 @@ const FilesList = ({ files, onDelete }) => {
               >
                 {filename}
               </p>
-              <button
+              <FormButton
                 type="button"
-                className={
-                  files[filename] === true ? classes.restore : classes.delete
-                }
+                color={files[filename] === true ? "submit" : "reject"}
                 onClick={() => onDelete(filename)}
               >
                 {files[filename] === true ? "Restore" : "Delete"}
-              </button>
+              </FormButton>
             </div>
           );
         })}

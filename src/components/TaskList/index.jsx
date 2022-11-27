@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import classes from "./index.module.css";
+import classes from "./index.module.less";
 import dayjs from "dayjs";
 
 const TaskList = ({ tasks }) => {
@@ -15,7 +15,7 @@ const TaskList = ({ tasks }) => {
         const date = dayjs(task.endsAt);
         return (
           <div key={task.id} className={classes.task}>
-            <Link to={"/task/" + task.id}>
+            <Link to={"/task/" + task.id} className={classes.grid_first}>
               <h2>{task.title}</h2>
             </Link>
             <h2>{date.format("D MMM YYYY")}</h2>

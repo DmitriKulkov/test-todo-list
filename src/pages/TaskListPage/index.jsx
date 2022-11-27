@@ -8,6 +8,7 @@ import EditDialog from "../../components/UI/EditDialog";
 import TaskForm from "../../components/TaskForm";
 import { async } from "@firebase/util";
 import { ref, uploadBytes } from "firebase/storage";
+import FormButton from "../../components/UI/FormButton";
 
 const TaskListPage = () => {
   const [tasks, setTasks] = useState([]);
@@ -39,19 +40,30 @@ const TaskListPage = () => {
   };
 
   return (
-    <div className={classes.task_list}>
-      <h1>TASKS</h1>
-      <button onClick={() => setAddOpen(true)}>Add</button>
-      <EditDialog open={addOpen} setOpen={setAddOpen}>
-        <TaskForm
-          onSubmit={async (task, newFiles) => {
-            await handleAdd(task, newFiles);
-            fetching();
-            setAddOpen(false);
-          }}
-        />
-      </EditDialog>
-      <TaskList tasks={tasks} />
+    <div>
+      {!loading ? (
+        <div className={classes.task_list}>
+          <h1>TASKS</h1>
+          <FormButton
+            onClick={() => setAddOpen(true)}
+            className={classes.add_button}
+          >
+            Add
+          </FormButton>
+          <EditDialog open={addOpen} setOpen={setAddOpen}>
+            <TaskForm
+              onSubmit={async (task, newFiles) => {
+                await handleAdd(task, newFiles);
+                fetching();
+                setAddOpen(false);
+              }}
+            />
+          </EditDialog>
+          <TaskList tasks={tasks} />
+        </div>
+      ) : (
+        <div>Loading...</div>
+      )}
     </div>
   );
 };

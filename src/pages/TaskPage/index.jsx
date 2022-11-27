@@ -10,11 +10,11 @@ import useFetching from "../../hooks/useFetching";
 import { Context } from "../..";
 import { Link, useParams } from "react-router-dom";
 import dayjs from "dayjs";
-import { Edit, ArrowBackIos } from "@mui/icons-material";
 import classes from "./index.module.less";
 import EditDialog from "../../components/UI/EditDialog";
 import TaskForm from "../../components/TaskForm";
 import { deleteObject, listAll, ref, uploadBytes } from "firebase/storage";
+import FormButton from "../../components/UI/FormButton";
 
 const TaskPage = () => {
   const [task, setTask] = useState();
@@ -101,16 +101,16 @@ const TaskPage = () => {
           {task ? (
             <div>
               <Link to="/">
-                <button className={classes.back_button}>
-                  <ArrowBackIos fontSize="large" />
-                </button>
+                <FormButton className={classes.back_button}>
+                  {"< Back"}
+                </FormButton>
               </Link>
-              <button
+              <FormButton
                 className={classes.edit_button}
                 onClick={() => setEditOpen(true)}
               >
-                <Edit fontSize="large" />
-              </button>
+                Edit
+              </FormButton>
               <EditDialog open={editOpen} setOpen={setEditOpen}>
                 <TaskForm
                   onSubmit={async (task, newFiles) => {
@@ -137,6 +137,7 @@ const TaskPage = () => {
                 </div>
               </div>
               <p>{dayjs(task.endsAt).format("D MMM YYYY")}</p>
+              <h3>Description</h3>
               <p>{task.description}</p>
               {files && (
                 <div>
@@ -144,32 +145,38 @@ const TaskPage = () => {
                   {viewFiles(files)}
                 </div>
               )}
-
               <Link to="/">
-                <button onClick={() => handleDelete()}>Delete</button>
+                <FormButton color="reject" onClick={() => handleDelete()}>
+                  Delete
+                </FormButton>
               </Link>
-              <button
-                onClick={() => {
-                  setTask((prev) => {
-                    return { ...prev, status: "Done" };
-                  });
-                  updateDoc(doc(firestore, "tasks", id), { status: "Done" });
-                }}
-              >
-                Mark as Done
-              </button>
-              <button
-                onClick={() => {
-                  setTask((prev) => {
-                    return { ...prev, status: "In progress" };
-                  });
-                  updateDoc(doc(firestore, "tasks", id), {
-                    status: "In progress",
-                  });
-                }}
-              >
-                Mark as In progress
-              </button>
+              {task.status === "In progress" ? (
+                <FormButton
+                  onClick={() => {
+                    setTask((prev) => {
+                      return { ...prev, status: "Done" };
+                    });
+                    updateDoc(doc(firestore, "tasks", id), {
+                      status: "Done",
+                    });
+                  }}
+                >
+                  Mark as Done
+                </FormButton>
+              ) : (
+                <FormButton
+                  onClick={() => {
+                    setTask((prev) => {
+                      return { ...prev, status: "In progress" };
+                    });
+                    updateDoc(doc(firestore, "tasks", id), {
+                      status: "In progress",
+                    });
+                  }}
+                >
+                  Mark as In progress
+                </FormButton>
+              )}
             </div>
           ) : (
             <div>Error</div>

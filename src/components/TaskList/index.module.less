@@ -1,0 +1,29 @@
+.task {
+  .grid();
+  border: 1px solid lightblue;
+  border-radius: 50px;
+}
+
+.task_list__container {
+  width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task_list__header {
+  .grid();
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-auto-columns: 1fr;
+}
+
+.grid_first {
+  padding: 0 20px;
+  overflow: hidden;
+}

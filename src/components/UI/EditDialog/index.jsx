@@ -1,10 +1,15 @@
 import React from "react";
 import classes from "./index.module.less";
 
-const EditDialog = ({ open, setOpen, children }) => {
+const EditDialog = ({ open, setOpen, className, children, ...rest }) => {
   return (
     <dialog
-      className={open ? classes.edit + " " + classes.edit_open : classes.edit}
+      className={
+        (open ? classes.edit + " " + classes.edit_open : classes.edit) +
+        " " +
+        className
+      }
+      {...rest}
       onClick={() => setOpen(false)}
     >
       <div

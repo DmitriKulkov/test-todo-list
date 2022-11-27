@@ -12,17 +12,9 @@
     justify-content: flex-end;
 
     .submit__button {
-      .form_button();
-      width: 80px;
-      background-color: lightblue;
+      width: 100px;
     }
   }
-}
-
-.form_button {
-  border: none;
-  height: 30px;
-  padding: 0 10px;
 }
 
 .files_loader {
@@ -37,18 +29,24 @@
   display: none;
 }
 
-.files_loader__container {
-  width: 200px;
-  height: 80px;
-  border: 2px solid black;
-  background-color: white;
+.file_centring {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+.files_loader__container {
+  width: 200px;
+  height: 80px;
+  border: 2px solid black;
+  background-color: white;
+  .file_centring();
+}
+
 .loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  .file_centring();
+}
+
+.file_input {
+  display: none;
 }
