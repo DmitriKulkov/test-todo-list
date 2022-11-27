@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import classes from "./index.module.less";
 import dayjs from "dayjs";
+import Status from "../Status";
 
 const TaskList = ({ tasks }) => {
   return (
@@ -19,13 +20,13 @@ const TaskList = ({ tasks }) => {
               <h2>{task.title}</h2>
             </Link>
             <h2>{date.format("D MMM YYYY")}</h2>
-            <div>
-              {task.status === "Done"
-                ? "Done"
-                : date.isBefore(dayjs(), "day")
-                ? "Expired"
-                : "In progress"}
-            </div>
+            {task.status === "Done" ? (
+              <Status status="Done" />
+            ) : date.isBefore(dayjs(), "day") ? (
+              <Status status="Expired" />
+            ) : (
+              <Status status="In progress" />
+            )}
           </div>
         );
       })}

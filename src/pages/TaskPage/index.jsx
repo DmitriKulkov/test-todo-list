@@ -15,6 +15,7 @@ import EditDialog from "../../components/UI/EditDialog";
 import TaskForm from "../../components/TaskForm";
 import { deleteObject, listAll, ref, uploadBytes } from "firebase/storage";
 import FormButton from "../../components/UI/FormButton";
+import Status from "../../components/Status";
 
 const TaskPage = () => {
   const [task, setTask] = useState();
@@ -99,7 +100,7 @@ const TaskPage = () => {
       ) : (
         <div>
           {task ? (
-            <div>
+            <div className={classes.taskpage}>
               <Link to="/">
                 <FormButton className={classes.back_button}>
                   {"< Back"}
@@ -126,57 +127,59 @@ const TaskPage = () => {
                   setFiles={setFiles}
                 />
               </EditDialog>
+              <h1 className={classes.text_wrap}>{task.title}</h1>
               <div>
-                <h1>{task.title}</h1>
-                <div>
-                  {task.status === "Done"
-                    ? "Done"
-                    : dayjs(task.endsAt).isBefore(dayjs(), "day")
-                    ? "Expired"
-                    : "In progress"}
-                </div>
+                {task.status === "Done" ? (
+                  <Status status={"Done"} />
+                ) : dayjs(task.endsAt).isBefore(dayjs(), "day") ? (
+                  <Status status={"Expired"} />
+                ) : (
+                  <Status status={"In progress"} />
+                )}
               </div>
               <p>{dayjs(task.endsAt).format("D MMM YYYY")}</p>
               <h3>Description</h3>
-              <p>{task.description}</p>
+              <p className={classes.text_wrap}>{task.description}</p>
               {files && (
                 <div>
                   <h3>Files</h3>
                   {viewFiles(files)}
                 </div>
               )}
-              <Link to="/">
-                <FormButton color="reject" onClick={() => handleDelete()}>
-                  Delete
-                </FormButton>
-              </Link>
-              {task.status === "In progress" ? (
-                <FormButton
-                  onClick={() => {
-                    setTask((prev) => {
-                      return { ...prev, status: "Done" };
-                    });
-                    updateDoc(doc(firestore, "tasks", id), {
-                      status: "Done",
-                    });
-                  }}
-                >
-                  Mark as Done
-                </FormButton>
-              ) : (
-                <FormButton
-                  onClick={() => {
-                    setTask((prev) => {
-                      return { ...prev, status: "In progress" };
-                    });
-                    updateDoc(doc(firestore, "tasks", id), {
-                      status: "In progress",
-                    });
-                  }}
-                >
-                  Mark as In progress
-                </FormButton>
-              )}
+              <div>
+                <Link to="/">
+                  <FormButton color="reject" onClick={() => handleDelete()}>
+                    Delete
+                  </FormButton>
+                </Link>
+                {task.status === "In progress" ? (
+                  <FormButton
+                    onClick={() => {
+                      setTask((prev) => {
+                        return { ...prev, status: "Done" };
+                      });
+                      updateDoc(doc(firestore, "tasks", id), {
+                        status: "Done",
+                      });
+                    }}
+                  >
+                    Mark as Done
+                  </FormButton>
+                ) : (
+                  <FormButton
+                    onClick={() => {
+                      setTask((prev) => {
+                        return { ...prev, status: "In progress" };
+                      });
+                      updateDoc(doc(firestore, "tasks", id), {
+                        status: "In progress",
+                      });
+                    }}
+                  >
+                    Mark as In progress
+                  </FormButton>
+                )}
+              </div>
             </div>
           ) : (
             <div>Error</div>
