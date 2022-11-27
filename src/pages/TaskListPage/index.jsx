@@ -57,6 +57,7 @@ const TaskListPage = () => {
                 fetching();
                 setAddOpen(false);
               }}
+              setOpen={setAddOpen}
             />
           </EditDialog>
           <TaskList tasks={tasks} />

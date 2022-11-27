@@ -19,13 +19,13 @@ const TaskList = ({ tasks }) => {
             <Link to={"/task/" + task.id} className={classes.grid_first}>
               <h2>{task.title}</h2>
             </Link>
-            <h2>{date.format("D MMM YYYY")}</h2>
+            <h2 className={classes.ends_at}>{date.format("D MMM YYYY")}</h2>
             {task.status === "Done" ? (
-              <Status status="Done" />
+              <Status status="Done" className={classes.status} />
             ) : date.isBefore(dayjs(), "day") ? (
-              <Status status="Expired" />
+              <Status status="Expired" className={classes.status} />
             ) : (
-              <Status status="In progress" />
+              <Status status="In progress" className={classes.status} />
             )}
           </div>
         );

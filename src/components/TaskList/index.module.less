@@ -2,6 +2,7 @@
   .grid();
   border: 1px solid lightblue;
   border-radius: 50px;
+  margin: 0 20px;
 }
 
 .task_list__container {
@@ -26,4 +27,36 @@
 .grid_first {
   padding: 0 20px;
   overflow: hidden;
+
+  h2 {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+@media (max-width: 600px) {
+  .task_list__header {
+    display: none;
+  }
+
+  .ends_at {
+    display: none;
+  }
+
+  .status {
+    display: none;
+  }
+
+  .task {
+    display: block;
+    padding: 0px 20px;
+
+    a {
+      h2 {
+        font-size: 18px;
+        margin: 0;
+      }
+    }
+  }
 }

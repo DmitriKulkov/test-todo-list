@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore/lite"
 import { getStorage } from 'firebase/storage'
-import './index.css';
+import './index.less';
 import App from './App';
 
 const firebaseConfig = {

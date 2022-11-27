@@ -157,6 +157,7 @@ const TaskPage = () => {
                     fetching();
                     setEditOpen(false);
                   }}
+                  setOpen={setEditOpen}
                   task={task}
                   files={files}
                   setFiles={setFiles}

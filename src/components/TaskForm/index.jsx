@@ -5,7 +5,7 @@ import FormButton from "../UI/FormButton";
 import Loader from "../UI/Loader";
 import classes from "./index.module.less";
 
-const TaskForm = ({ onSubmit, task = {}, files, setFiles }) => {
+const TaskForm = ({ onSubmit, task = {}, files, setFiles, setOpen }) => {
   const [newFiles, setNewFiles] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -46,27 +46,31 @@ const TaskForm = ({ onSubmit, task = {}, files, setFiles }) => {
       {files ? (
         <div>
           <h3>Uploaded Files</h3>
-          <FilesList
-            files={files}
-            onDelete={(filename) =>
-              setFiles((prev) => {
-                return { ...prev, [filename]: !prev[filename] };
-              })
-            }
-          />
+          <div className={classes.files_container}>
+            <FilesList
+              files={files}
+              onDelete={(filename) =>
+                setFiles((prev) => {
+                  return { ...prev, [filename]: !prev[filename] };
+                })
+              }
+            />
+          </div>
         </div>
       ) : null}
       <h3>New Files</h3>
-      <FilesList
-        files={newFiles}
-        onDelete={(filename) =>
-          setNewFiles((prev) => {
-            const nw = { ...prev };
-            delete nw[filename];
-            return nw;
-          })
-        }
-      />
+      <div className={classes.files_container}>
+        <FilesList
+          files={newFiles}
+          onDelete={(filename) =>
+            setNewFiles((prev) => {
+              const nw = { ...prev };
+              delete nw[filename];
+              return nw;
+            })
+          }
+        />
+      </div>
 
       <input
         type="file"
@@ -91,6 +95,16 @@ const TaskForm = ({ onSubmit, task = {}, files, setFiles }) => {
         Add files
       </FormButton>
       <div className={classes.submit__container}>
+        <FormButton
+          type="button"
+          className={classes.submit__button}
+          color="reject"
+          onClick={() => {
+            setOpen(false);
+          }}
+        >
+          Close
+        </FormButton>
         <FormButton type="submit" className={classes.submit__button}>
           Submit
         </FormButton>
@@ -104,7 +118,7 @@ const TaskForm = ({ onSubmit, task = {}, files, setFiles }) => {
       >
         <div className={classes.files_loader__container}>
           <Loader size="small" />
-          <h3>Loading files...</h3>
+          <p>Loading files...</p>
         </div>
       </div>
     </form>
