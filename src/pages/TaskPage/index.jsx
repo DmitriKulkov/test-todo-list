@@ -8,21 +8,32 @@ import {
 } from "firebase/firestore/lite";
 import useFetching from "../../hooks/useFetching";
 import { Context } from "../..";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useNavigation, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import classes from "./index.module.less";
 import EditDialog from "../../components/UI/EditDialog";
 import TaskForm from "../../components/TaskForm";
-import { deleteObject, listAll, ref, uploadBytes } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  listAll,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 import FormButton from "../../components/UI/FormButton";
 import Status from "../../components/Status";
+import ConfirmBox from "../../components/UI/ConfirmBox";
 
 const TaskPage = () => {
   const [task, setTask] = useState();
   const [editOpen, setEditOpen] = useState(false);
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState({});
+  const [urls, setUrls] = useState({});
+  const [deleteBoxOpen, setDeleteBoxOpen] = useState(false);
 
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   const { firestore, storage } = useContext(Context);
 
@@ -67,6 +78,8 @@ const TaskPage = () => {
   };
 
   const handleDelete = () => {
+    console.log("hi");
+    navigate("/");
     return Promise.all(
       [deleteDoc(doc(firestore, "tasks", id))],
       Object.entries(files).forEach((file) => deleteFile(file[0]))
@@ -83,13 +96,32 @@ const TaskPage = () => {
       dict[file] = false;
     });
     setFiles(dict);
+    await getUrls(dict);
   };
 
-  const viewFiles = (files) => {
-    const res = [];
+  const getUrls = async (files) => {
+    const promises = [];
+    const urls = {};
     for (const file of Object.entries(files)) {
-      res.push(<p key={file[0]}>{file[0]}</p>);
+      promises.push(
+        getDownloadURL(ref(storage, id + "/" + file[0])).then((url) => {
+          urls[file[0]] = url;
+        })
+      );
     }
+    await Promise.all(promises);
+    setUrls(urls);
+  };
+
+  const viewUrls = () => {
+    const res = [];
+    Object.entries(urls).forEach(([filename, url]) => {
+      res.push(
+        <a href={url} key={filename}>
+          <p>{filename}</p>
+        </a>
+      );
+    });
     return res;
   };
 
@@ -143,15 +175,25 @@ const TaskPage = () => {
               {files && (
                 <div>
                   <h3>Files</h3>
-                  {viewFiles(files)}
+                  {viewUrls()}
                 </div>
               )}
               <div>
-                <Link to="/">
-                  <FormButton color="reject" onClick={() => handleDelete()}>
-                    Delete
-                  </FormButton>
-                </Link>
+                <FormButton
+                  color="reject"
+                  onClick={() => setDeleteBoxOpen(true)}
+                >
+                  Delete
+                </FormButton>
+                <ConfirmBox
+                  open={deleteBoxOpen}
+                  setOpen={setDeleteBoxOpen}
+                  message="Are you shure you want to delete this task?"
+                  reject="Cancel"
+                  onReject={() => setDeleteBoxOpen(false)}
+                  confirm="Delete"
+                  onConfirm={handleDelete}
+                />
                 {task.status === "In progress" ? (
                   <FormButton
                     onClick={() => {

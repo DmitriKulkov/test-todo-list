@@ -79,6 +79,7 @@ const TaskForm = ({ onSubmit, task = {}, files, setFiles }) => {
           setNewFiles((prev) => {
             return { ...prev, ...newFiles };
           });
+          console.log(newFiles);
         }}
         multiple
       />

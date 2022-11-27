@@ -4,16 +4,12 @@ import classes from "./index.module.less";
 const EditDialog = ({ open, setOpen, className, children, ...rest }) => {
   return (
     <dialog
-      className={
-        (open ? classes.edit + " " + classes.edit_open : classes.edit) +
-        " " +
-        className
-      }
+      className={open ? classes.edit + " " + classes.edit_open : classes.edit}
       {...rest}
       onClick={() => setOpen(false)}
     >
       <div
-        className={classes.edit__container}
+        className={classes.edit__container + " " + className}
         onClick={(e) => {
           e.stopPropagation();
         }}
