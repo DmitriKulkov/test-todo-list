@@ -209,74 +209,75 @@ const TaskPage = () => {
                     fetching();
                     setEditOpen(false);
                   }}
-                  setOpen={setEditOpen}
+                  onReject={() => setEditOpen(false)}
                   task={task}
                   files={files}
                   setFiles={setFiles}
                 />
               </EditDialog>
               <h1 className={classes.text_wrap}>{task.title}</h1>
-              <div>
-                {task.status === "Done" ? (
-                  <Status status={"Done"} />
-                ) : dayjs(task.endsAt).isBefore(dayjs(), "day") ? (
-                  <Status status={"Expired"} />
-                ) : (
-                  <Status status={"In progress"} />
-                )}
-              </div>
-              <p>{dayjs(task.endsAt).format("D MMM YYYY")}</p>
-              <h3>Description</h3>
-              <p className={classes.text_wrap}>{task.description}</p>
-              {files && (
-                <div>
-                  <h3>Files</h3>
-                  {viewUrls()}
-                </div>
+              {task.status === "Done" ? (
+                <Status status={"Done"} />
+              ) : dayjs(task.endsAt).isBefore(dayjs(), "day") ? (
+                <Status status={"Expired"} />
+              ) : (
+                <Status status={"In progress"} />
               )}
-              <div>
-                <FormButton
-                  color="reject"
-                  onClick={() => setDeleteBoxOpen(true)}
-                >
-                  Delete
-                </FormButton>
-                <ConfirmBox
-                  open={deleteBoxOpen}
-                  setOpen={setDeleteBoxOpen}
-                  message="Are you shure you want to delete this task?"
-                  reject="Cancel"
-                  onReject={() => setDeleteBoxOpen(false)}
-                  confirm="Delete"
-                  onConfirm={handleDelete}
-                />
-                {task.status === "In progress" ? (
-                  <FormButton
-                    onClick={() => {
-                      setTask((prev) => {
-                        return { ...prev, status: "Done" };
-                      });
-                      updateDoc(doc(firestore, "tasks", id), {
-                        status: "Done",
-                      });
-                    }}
-                  >
-                    Mark as Done
-                  </FormButton>
-                ) : (
-                  <FormButton
-                    onClick={() => {
-                      setTask((prev) => {
-                        return { ...prev, status: "In progress" };
-                      });
-                      updateDoc(doc(firestore, "tasks", id), {
-                        status: "In progress",
-                      });
-                    }}
-                  >
-                    Mark as In progress
-                  </FormButton>
+              <div className={classes.task_content}>
+                <h2>Ends at:</h2>
+                <p>{dayjs(task.endsAt).format("D MMM YYYY")}</p>
+                <h2>Description</h2>
+                <p className={classes.text_wrap}>{task.description}</p>
+                {files && (
+                  <div className={classes.urls}>
+                    <h2>Files</h2>
+                    {viewUrls()}
+                  </div>
                 )}
+                <div>
+                  <FormButton
+                    color="reject"
+                    onClick={() => setDeleteBoxOpen(true)}
+                  >
+                    Delete
+                  </FormButton>
+                  <ConfirmBox
+                    open={deleteBoxOpen}
+                    setOpen={setDeleteBoxOpen}
+                    message="Are you shure you want to delete this task?"
+                    reject="Cancel"
+                    onReject={() => setDeleteBoxOpen(false)}
+                    confirm="Delete"
+                    onConfirm={handleDelete}
+                  />
+                  {task.status === "In progress" ? (
+                    <FormButton
+                      onClick={() => {
+                        setTask((prev) => {
+                          return { ...prev, status: "Done" };
+                        });
+                        updateDoc(doc(firestore, "tasks", id), {
+                          status: "Done",
+                        });
+                      }}
+                    >
+                      Mark as Done
+                    </FormButton>
+                  ) : (
+                    <FormButton
+                      onClick={() => {
+                        setTask((prev) => {
+                          return { ...prev, status: "In progress" };
+                        });
+                        updateDoc(doc(firestore, "tasks", id), {
+                          status: "In progress",
+                        });
+                      }}
+                    >
+                      Mark as In progress
+                    </FormButton>
+                  )}
+                </div>
               </div>
             </div>
           ) : null}

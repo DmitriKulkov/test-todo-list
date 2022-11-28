@@ -74,7 +74,7 @@ const TaskListPage = () => {
                 fetching();
                 setAddOpen(false);
               }}
-              setOpen={setAddOpen}
+              onReject={() => setAddOpen(false)}
             />
           </EditDialog>
           <TaskList tasks={tasks} />

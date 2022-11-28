@@ -25,7 +25,7 @@ import classes from "./index.module.less";
  * @param {TaskFormProps} props
  * @returns {React.FC}
  */
-const TaskForm = ({ onSubmit, task = {}, files, setFiles, setOpen }) => {
+const TaskForm = ({ onSubmit, task = {}, files, setFiles, onReject }) => {
   const [newFiles, setNewFiles] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -119,9 +119,7 @@ const TaskForm = ({ onSubmit, task = {}, files, setFiles, setOpen }) => {
           type="button"
           className={classes.submit__button}
           color="reject"
-          onClick={() => {
-            setOpen(false);
-          }}
+          onClick={onReject}
         >
           Close
         </FormButton>
