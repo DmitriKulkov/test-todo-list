@@ -10,10 +10,13 @@ import { ref, uploadBytes } from "firebase/storage";
 import FormButton from "../../components/UI/FormButton";
 import Loader from "../../components/UI/Loader";
 
+/**
+ * Main page with tasks list
+ * @returns {React.FC}
+ */
 const TaskListPage = () => {
   const [tasks, setTasks] = useState([]);
   const [addOpen, setAddOpen] = useState(false);
-
   const { firestore, storage } = useContext(Context);
 
   const { fetching, loading, error } = useFetching(async () => {
@@ -29,6 +32,20 @@ const TaskListPage = () => {
     fetching();
   }, []);
 
+  /**
+   * @typedef {Object} Task
+   * @property {string} title
+   * @property {string} description
+   * @property {string} endsAt
+   * @property {string} status
+   */
+
+  /**
+   * Handles new task addition
+   * @param {Task} task - new task
+   * @param {File[]} newFiles - new files for task
+   * @returns {Promise<any[]>}
+   */
   const handleAdd = async (task, newFiles) => {
     const promises = [];
     const docId = (await addDoc(collection(firestore, "tasks"), task))._key.path

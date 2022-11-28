@@ -6,6 +6,9 @@ import { getStorage } from 'firebase/storage'
 import './index.less';
 import App from './App';
 
+/**
+ * Firebase configuration
+ */
 const firebaseConfig = {
 apiKey: "AIzaSyDD446TCTQ25OoTv8xrBChyKo_Y3Y3weac",
 authDomain: "test-todo-list-3c9bd.firebaseapp.com",
@@ -16,22 +19,36 @@ appId: "1:1052818577340:web:d35354d4d506c61b5efdb9",
 measurementId: "G-6LM1PL3RRY",
 };
 
-// Initialize Firebase
+//Firebase initialization
 const firebase = initializeApp(firebaseConfig);
+//Firestore initialization
 const firestore = getFirestore(firebase)
+//Cloude storage initialization
 const storage = getStorage(firebase)
 
-export const Context = createContext(null)
+/**
+ * @typedef {Object} TGeneralContext
+ * @property {*} firebase
+ * @property {*} firestore
+ * @property {*} storage
+ */
 
+ /**
+ * @type {React.Context<TGeneralContext>}
+ */
+export const Context = createContext(null)
+/**
+ * Root component
+ */
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <Context.Provider value = {{
-    firebase,
-    firestore,
-    storage
-  }}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </Context.Provider>
+  <React.StrictMode>
+      <Context.Provider value = {{
+        firebase,
+        firestore,
+        storage
+      }}>
+        <App />
+    </Context.Provider>
+  </React.StrictMode>
 );

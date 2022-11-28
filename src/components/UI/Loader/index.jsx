@@ -1,6 +1,16 @@
 import React from "react";
 import classes from "./index.module.less";
+/**
+ * @typedef {Object} LoaderProps
+ * @property {'large'|'small'} size - loader size
+ * @property {string} className - styles
+ */
 
+/**
+ * Loader UI component
+ * @param {LoaderProps} props
+ * @returns {React.FC}
+ */
 const Loader = ({ size = "large", className }) => {
   const sizes = {
     small: classes.small,

@@ -5,6 +5,26 @@ import FormButton from "../UI/FormButton";
 import Loader from "../UI/Loader";
 import classes from "./index.module.less";
 
+/**
+ * @typedef {Object} Task
+ * @property {string} title
+ * @property {string} description
+ * @property {string} endsAt
+ * @property {string} status
+ */
+/**
+ * @typedef {Object} TaskFormProps
+ * @property {Function} onSubmit - function to perform on submit
+ * @property {Task} task - task to edit, leave undefined to create new
+ * @property {Object} files - files of the task
+ * @property {Function} setFiles - function to change task files list
+ * @property {Function} setOpen - function to change dialog visibility
+ */
+/**
+ * Form for task creation/edit
+ * @param {TaskFormProps} props
+ * @returns {React.FC}
+ */
 const TaskForm = ({ onSubmit, task = {}, files, setFiles, setOpen }) => {
   const [newFiles, setNewFiles] = useState({});
   const [loading, setLoading] = useState(false);

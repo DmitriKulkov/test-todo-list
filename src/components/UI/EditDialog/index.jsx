@@ -1,6 +1,18 @@
 import React from "react";
 import classes from "./index.module.less";
+/**
+ * @typedef {Object} EditDialogProps
+ * @property {Boolean} open - is dialog visible
+ * @property {Function} setOpen - set dialog visible
+ * @property {String} className - styles
+ * @property {React.ReactNode} children - children components
+ */
 
+/**
+ * Dialog UI component
+ * @param {EditDialogProps} props
+ * @returns {React.FC}
+ */
 const EditDialog = ({ open, setOpen, className, children, ...rest }) => {
   return (
     <dialog

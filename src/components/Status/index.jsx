@@ -1,6 +1,16 @@
 import React from "react";
 import classes from "./index.module.less";
 
+/**
+ * @typedef {Object} StatusProps
+ * @property {'In progress'|'Done'|'Expired'} status - Task status
+ * @property {String} className - styles
+ */
+/**
+ * Task status component
+ * @param {StatusProps} props
+ * @returns {React.FC}
+ */
 const Status = ({ status, className }) => {
   const statDict = {
     Done: classes.done,

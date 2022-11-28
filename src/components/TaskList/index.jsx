@@ -4,6 +4,22 @@ import classes from "./index.module.less";
 import dayjs from "dayjs";
 import Status from "../Status";
 
+/**
+ * @typedef {Object} Task
+ * @property {string} title
+ * @property {string} description
+ * @property {string} endsAt
+ * @property {string} status
+ */
+/**
+ * @typedef {Object} TaskListProps
+ * @property {Task[]} tasks - tasks list
+ */
+/**
+ * List of tasks component
+ * @param {TaskListProps} props
+ * @returns {React.FC}
+ */
 const TaskList = ({ tasks }) => {
   return (
     <div className={classes.task_list__container}>

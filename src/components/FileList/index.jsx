@@ -2,6 +2,16 @@ import React from "react";
 import FormButton from "../UI/FormButton";
 import classes from "./index.module.less";
 
+/**
+ * @typedef {Object} FileListProps
+ * @property {Object} files - files list
+ * @property {Function} onDelete - delete handler
+ */
+/**
+ * View file list with ability of file deletion handling
+ * @param {FileListProps} props
+ * @returns {React.FC}
+ */
 const FilesList = ({ files, onDelete }) => {
   return (
     <div>

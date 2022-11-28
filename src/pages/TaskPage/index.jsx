@@ -8,7 +8,7 @@ import {
 } from "firebase/firestore/lite";
 import useFetching from "../../hooks/useFetching";
 import { Context } from "../..";
-import { Link, useNavigate, useNavigation, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import classes from "./index.module.less";
 import EditDialog from "../../components/UI/EditDialog";
@@ -24,8 +24,19 @@ import FormButton from "../../components/UI/FormButton";
 import Status from "../../components/Status";
 import ConfirmBox from "../../components/UI/ConfirmBox";
 import Loader from "../../components/UI/Loader";
-
+/**
+ * Specific task page
+ * @returns {React.FC}
+ */
 const TaskPage = () => {
+  /**
+   * @typedef {Object} Task
+   * @property {string} title
+   * @property {string} description
+   * @property {string} endsAt
+   * @property {string} status
+   */
+
   const [task, setTask] = useState();
   const [editOpen, setEditOpen] = useState(false);
   const [files, setFiles] = useState({});
@@ -38,33 +49,64 @@ const TaskPage = () => {
 
   const { firestore, storage } = useContext(Context);
 
-  const { fetching, loading, error } = useFetching(async () => {
+  const { fetching, loading, error } = useFetching(() => {
     return Promise.all([
       getDoc(doc(firestore, "tasks", id)).then((res) => {
         if (res.exists()) {
           setTask({ ...res.data(), id: id });
         }
       }),
-      getFilesList(),
+      getFilesAndUrls().then(([files, urls]) => {
+        setFiles(files);
+        setUrls(urls);
+      }),
     ]);
   });
 
+  /**
+   * Get files and urls for download
+   * @returns {Promise<Object[]>}
+   */
+  const getFilesAndUrls = async () => {
+    const files = await getFilesList();
+    const urls = await getUrls(files);
+    return [files, urls];
+  };
+
   useEffect(() => {
     fetching();
-  }, []);
+  }, [fetching]);
 
+  /**
+   * Task edit handler
+   * @param {Task} editedTask
+   * @returns {Promise<void>}
+   */
   const handleEdit = async (editedTask) => {
     await setDoc(doc(firestore, "tasks", id), editedTask);
   };
-
+  /**
+   * File upload handler
+   * @param {string} filename
+   * @param {File} file
+   * @returns {Promise}
+   */
   const handleUploadFile = (filename, file) => {
     return uploadBytes(ref(storage, task.id + "/" + filename), file);
   };
-
+  /**
+   * File delete handler
+   * @param {string} filename
+   * @returns {Promise<void>}
+   */
   const deleteFile = (filename) => {
     return deleteObject(ref(storage, id + "/" + filename));
   };
-
+  /**
+   * Task files upload & deletion handler
+   * @param {Object} newFiles
+   * @returns {Promise<any[]>}
+   */
   const handleFiles = (newFiles) => {
     const promises = [];
     Object.entries(files).forEach(([filename, todelete]) => {
@@ -77,7 +119,10 @@ const TaskPage = () => {
     });
     return Promise.all(promises);
   };
-
+  /**
+   * Task deletion handler
+   * @returns {Promise<any[]>}
+   */
   const handleDelete = () => {
     console.log("hi");
     navigate("/");
@@ -96,10 +141,14 @@ const TaskPage = () => {
     filenames.forEach((file) => {
       dict[file] = false;
     });
-    setFiles(dict);
-    await getUrls(dict);
+    return dict;
   };
 
+  /**
+   * Get URL for file download
+   * @param {Object} files
+   * @returns {Promise<Object>}
+   */
   const getUrls = async (files) => {
     const promises = [];
     const urls = {};
@@ -111,9 +160,12 @@ const TaskPage = () => {
       );
     }
     await Promise.all(promises);
-    setUrls(urls);
+    return urls;
   };
-
+  /**
+   * Returns urls components list
+   * @returns {any[]}
+   */
   const viewUrls = () => {
     const res = [];
     Object.entries(urls).forEach(([filename, url]) => {
@@ -227,9 +279,7 @@ const TaskPage = () => {
                 )}
               </div>
             </div>
-          ) : (
-            <div>Error</div>
-          )}
+          ) : null}
         </div>
       )}
     </div>
