@@ -3,7 +3,7 @@ import classes from "./index.module.less";
 import TaskList from "../../components/TaskList";
 import { Context } from "../..";
 import useFetching from "../../hooks/useFetching";
-import { collection, getDocs, addDoc, doc } from "firebase/firestore/lite";
+import { collection, getDocs, addDoc } from "firebase/firestore/lite";
 import EditDialog from "../../components/UI/EditDialog";
 import TaskForm from "../../components/TaskForm";
 import { ref, uploadBytes } from "firebase/storage";
@@ -19,7 +19,7 @@ const TaskListPage = () => {
   const [addOpen, setAddOpen] = useState(false);
   const { firestore, storage } = useContext(Context);
 
-  const { fetching, loading, error } = useFetching(async () => {
+  const { fetching, loading } = useFetching(async () => {
     const docSnap = await getDocs(collection(firestore, "tasks"));
     setTasks(
       docSnap.docs.map((doc) => {

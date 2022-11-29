@@ -1,4 +1,4 @@
-import { useCallback, useState, useRef } from "react"
+import { useState, useRef } from "react"
 /**
  * Custom hook for fetch processing
  * @param {Function} callback - Function for processing 

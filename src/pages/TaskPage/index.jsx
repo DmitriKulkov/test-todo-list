@@ -49,7 +49,7 @@ const TaskPage = () => {
 
   const { firestore, storage } = useContext(Context);
 
-  const { fetching, loading, error } = useFetching(() => {
+  const { fetching, loading } = useFetching(() => {
     return Promise.all([
       getDoc(doc(firestore, "tasks", id)).then((res) => {
         if (res.exists()) {
@@ -75,7 +75,7 @@ const TaskPage = () => {
 
   useEffect(() => {
     fetching();
-  }, [fetching]);
+  }, []);
 
   /**
    * Task edit handler
