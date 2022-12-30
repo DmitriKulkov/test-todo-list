@@ -1,20 +1,19 @@
-import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import classes from './App.less';
-import AppRoutes from './pages/AppRoutes';
+import React from "react";
+import { BrowserRouter } from "react-router-dom";
+import classes from "./App.less";
+import AppRoutes from "./pages/AppRoutes";
 /**
  * Main App component with BrowserRouter
- * @return {React.FC}
+ * @returns {JSX.Element}
  */
 function App() {
   return (
     <div className={classes.App}>
       <BrowserRouter>
-        <AppRoutes/>
+        <AppRoutes />
       </BrowserRouter>
     </div>
   );
 }
 
 export default App;
-

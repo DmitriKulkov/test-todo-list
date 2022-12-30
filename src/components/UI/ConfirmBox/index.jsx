@@ -17,7 +17,7 @@ import classes from "./index.module.less";
 /**
  * Confirm box UI component
  * @param {ConfirmBoxProps} props
- * @returns {React.FC}
+ * @returns {JSX.Element}
  */
 const ConfirmBox = ({
   open,

@@ -9,7 +9,7 @@ import classes from "./index.module.less";
 /**
  * Button UI component
  * @param {FormButtonProps} props
- * @returns {React.FC}
+ * @returns {JSX.Element}
  */
 export const FormButton = ({
   color = "basic",

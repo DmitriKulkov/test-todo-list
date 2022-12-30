@@ -12,7 +12,7 @@ import Loader from "../../components/UI/Loader";
 
 /**
  * Main page with tasks list
- * @returns {React.FC}
+ * @returns {JSX.Element}
  */
 const TaskListPage = () => {
   const [tasks, setTasks] = useState([]);

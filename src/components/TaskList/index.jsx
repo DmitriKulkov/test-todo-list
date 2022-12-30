@@ -18,7 +18,7 @@ import Status from "../Status";
 /**
  * List of tasks component
  * @param {TaskListProps} props
- * @returns {React.FC}
+ * @returns {JSX.Element}
  */
 const TaskList = ({ tasks }) => {
   return (

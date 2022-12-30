@@ -23,9 +23,15 @@ import classes from "./index.module.less";
 /**
  * Form for task creation/edit
  * @param {TaskFormProps} props
- * @returns {React.FC}
+ * @returns {JSX.Element}
  */
-const TaskForm = ({ onSubmit, task = {}, files, setFiles, onReject }) => {
+const TaskForm = ({
+  onSubmit,
+  task = { title: "New Task" },
+  files,
+  setFiles,
+  onReject,
+}) => {
   const [newFiles, setNewFiles] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -48,7 +54,12 @@ const TaskForm = ({ onSubmit, task = {}, files, setFiles, onReject }) => {
       }}
     >
       <h3>Title</h3>
-      <input name="title" type="text" defaultValue={task.title} />
+      <input
+        name="title"
+        type="text"
+        required={true}
+        defaultValue={task.title}
+      />
       <h3>Ends At</h3>
       <input
         name="endsAt"

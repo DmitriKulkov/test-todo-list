@@ -9,7 +9,7 @@ import classes from "./index.module.less";
 /**
  * Loader UI component
  * @param {LoaderProps} props
- * @returns {React.FC}
+ * @returns {JSX.Element}
  */
 const Loader = ({ size = "large", className }) => {
   const sizes = {

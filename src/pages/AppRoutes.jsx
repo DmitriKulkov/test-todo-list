@@ -4,7 +4,7 @@ import TaskListPage from "./TaskListPage";
 import TaskPage from "./TaskPage";
 /**
  * App routes component
- * @returns {React.FC}
+ * @returns {JSX.Element}
  */
 const AppRoutes = () => {
   return (

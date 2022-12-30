@@ -11,7 +11,7 @@ import classes from "./index.module.less";
 /**
  * Dialog UI component
  * @param {EditDialogProps} props
- * @returns {React.FC}
+ * @returns {JSX.Element}
  */
 const EditDialog = ({ open, setOpen, className, children, ...rest }) => {
   return (

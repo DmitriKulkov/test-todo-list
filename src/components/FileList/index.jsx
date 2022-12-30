@@ -10,7 +10,7 @@ import classes from "./index.module.less";
 /**
  * View file list with ability of file deletion handling
  * @param {FileListProps} props
- * @returns {React.FC}
+ * @returns {JSX.Element}
  */
 const FilesList = ({ files, onDelete }) => {
   return (

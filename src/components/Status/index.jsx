@@ -9,7 +9,7 @@ import classes from "./index.module.less";
 /**
  * Task status component
  * @param {StatusProps} props
- * @returns {React.FC}
+ * @returns {JSX.Element}
  */
 const Status = ({ status, className }) => {
   const statDict = {

@@ -26,7 +26,7 @@ import ConfirmBox from "../../components/UI/ConfirmBox";
 import Loader from "../../components/UI/Loader";
 /**
  * Specific task page
- * @returns {React.FC}
+ * @returns {JSX.Element}
  */
 const TaskPage = () => {
   /**
@@ -121,15 +121,14 @@ const TaskPage = () => {
   };
   /**
    * Task deletion handler
-   * @returns {Promise<any[]>}
+   * @returns {Promise<void>}
    */
   const handleDelete = () => {
     console.log("hi");
-    navigate("/");
     return Promise.all(
       [deleteDoc(doc(firestore, "tasks", id))],
       Object.entries(files).forEach((file) => deleteFile(file[0]))
-    );
+    ).then(() => navigate("/"));
   };
 
   const getFilesList = async () => {
